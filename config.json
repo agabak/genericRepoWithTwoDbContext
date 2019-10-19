@@ -1,0 +1,6 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=IdentityCoredb;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "DataConnection": "Server=DESKTOP-I4405L4;Database=70-461;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
