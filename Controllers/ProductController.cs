@@ -1,8 +1,12 @@
 ﻿using Identity.Data.Repositories;
 using Identity.Entities;
+using Identity.Services;
 using Identity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Identity.Controllers
@@ -10,31 +14,55 @@ namespace Identity.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly ProductRepository _repository;
+        private readonly ProductRepository _productRepository;
+        private readonly SupplierRepository _supplierRepository;
+      
 
-        public ProductController(ProductRepository repository)
+        public ProductController(ProductRepository productRepository, SupplierRepository supplierRepository)
         {
-            _repository = repository;
+            _productRepository = productRepository;
+            _supplierRepository = supplierRepository;
         }
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
-        public IActionResult Create()
+        
+
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var suppliers = await _supplierRepository.GetAll()
+                                              .ConfigureAwait(true);
+            var product = new ProductViewModel();
+
+            product.Items = BuildDropdown.DropdownItems(suppliers);
+
+            return View(product);
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel model)
         {
+
             if (!ModelState.IsValid) return View(model);
 
-            var product = new Product { ProductName = model?.ProductName };
+            int supplierId = 0;
+            int.TryParse(model?.SupplierId, out supplierId);
 
-            product = await _repository.Create(product).ConfigureAwait(true);
+            var product = new Product { 
+                                        ProductName = model?.ProductName, 
+                                        UnitPrice = model.UnitPrice, 
+                                        Package = model.Package, 
+                                        IsDiscontinued = model.IsDiscontinued ,
+                                        SupplierId = supplierId
+                                  };
+
+            product = await _productRepository.Create(product).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Home");
         }
@@ -42,7 +70,7 @@ namespace Identity.Controllers
         public async Task<IActionResult> Detail([FromRoute] int id)
         {
             if (id <= 0) return RedirectToAction("Index", "Home");
-            var product = await _repository.GetSingle(id).ConfigureAwait(true);
+            var product = await _productRepository.GetSingle(id).ConfigureAwait(true);
 
             if(product == null) return RedirectToAction("Index", "Home");
             return View(product);

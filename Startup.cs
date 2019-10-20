@@ -33,6 +33,7 @@ namespace Identity
             services.AddControllersWithViews();
 
             services.AddScoped<ProductRepository>();
+            services.AddScoped<SupplierRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

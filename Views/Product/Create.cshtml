@@ -10,7 +10,27 @@
                     <input asp-for="ProductName" class="form-control" />
                     <span asp-validation-for="ProductName" class="alert-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-success">Login</button>
+                <div class="form-group">
+                   <label asp-for="UnitPrice"></label>
+                    <input asp-for="UnitPrice"  class="form-control"/>
+                    <span asp-validation-for="UnitPrice"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Package"></label>
+                    <input asp-for="Package" class="form-control" />
+                    <span asp-validation-for="Package"></span>
+                </div>
+                <div class="form-group">
+                    <select asp-for="SupplierId" asp-items="@Model.Items" class="form-control"></select>
+                </div>
+             
+                <div class="form-group">
+                    <div class="form-check">
+                        <input asp-for="IsDiscontinued" class="form-check-input" />
+                        <label asp-for="IsDiscontinued" class="form-check-label"></label>
+                    </div> 
+                </div>
+                <button type="submit" class="btn btn-success">Create</button>
             </form>
         </div>
     </div>
