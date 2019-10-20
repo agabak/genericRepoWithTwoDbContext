@@ -22,7 +22,7 @@ namespace Identity.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _repository.GetAllWithInclude(re => re.Supplier)
-                                            .ConfigureAwait(false);
+                                            .ConfigureAwait(true);
             return View(products.ToList());
         }
     }

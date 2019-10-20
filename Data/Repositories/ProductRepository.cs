@@ -16,7 +16,7 @@ namespace Identity.Data.Repositories
 
         public override async Task<IEnumerable<Product>> GetAllWithInclude(params Expression<Func<Product, object>>[] includeProperties)
         {
-            var products = await base.GetAllWithInclude(includeProperties).ConfigureAwait(false);
+            var products = await base.GetAllWithInclude(includeProperties).ConfigureAwait(true);
             return products.Where(p => !p.IsDiscontinued).OrderBy(x => x.ProductName);
         }
     }

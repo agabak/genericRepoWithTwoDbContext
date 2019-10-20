@@ -10,10 +10,9 @@ namespace Identity.Data.DataContexts
 {
     public class AuthContext: IdentityDbContext<StoreUser>
     {
-        public AuthContext(DbContextOptions<AuthContext> options): base(options)
+        public AuthContext(DbContextOptions<AuthContext> options) : base(options)
         {
         }
-
         public DbSet<StoreUser> StoreUsers { get; set; }
     }
 }

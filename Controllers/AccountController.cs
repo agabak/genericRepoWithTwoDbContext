@@ -29,21 +29,21 @@ namespace Identity.Controllers
         {
             if (!ModelState.IsValid) return View(model);
             
-                var user = await _userManager.FindByNameAsync(model?.Username).ConfigureAwait(false);
+                var user = await _userManager.FindByNameAsync(model?.Username).ConfigureAwait(true);
                 if (user == null)
                  {
                     ModelState.AddModelError("", "User doesn't exist"); 
                     return View(model);
                  }
            
-              if(!await _userManager.CheckPasswordAsync(user, model.Password).ConfigureAwait(false))
+              if(!await _userManager.CheckPasswordAsync(user, model.Password).ConfigureAwait(true))
                 {
                     ModelState.AddModelError("", "enable to login");
                     return View(model);
                 }
 
             var signIn = await _signInManager.PasswordSignInAsync(user, model.Password, model.IsRememberMe, false)
-                                               .ConfigureAwait(false);
+                                               .ConfigureAwait(true);
 
             if (signIn.Succeeded)
                {
@@ -84,7 +84,7 @@ namespace Identity.Controllers
                                 UserName = model?.Email,
                                 PhoneNumber = model?.PhoneNumber
                             };
-          var isCreated = await _userManager.CreateAsync(storeUser, model.Password).ConfigureAwait(false);
+          var isCreated = await _userManager.CreateAsync(storeUser, model.Password).ConfigureAwait(true);
             if (isCreated.Succeeded)
             {
                 return RedirectToAction("Login", "Account");

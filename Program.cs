@@ -13,7 +13,7 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();           
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,6 +22,11 @@ namespace Identity
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    //webBuilder.ValidateScope = true;
+                })
+                .UseDefaultServiceProvider((context, options) => {
+
+                    options.ValidateScopes = true;
                 });
 
         private static void ApplicationConfigureSetting(HostBuilderContext ctx, IConfigurationBuilder builder)

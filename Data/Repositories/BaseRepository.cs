@@ -23,13 +23,13 @@ namespace Identity.Data.Repositories
         public virtual async Task<TEntity> Create(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait(true);
             return entity;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
-            return await _dbSet.ToListAsync().ConfigureAwait(false);
+            return await _dbSet.ToListAsync().ConfigureAwait(true);
         }
 
         public virtual async Task<TEntity> GetSingle(object id)
@@ -41,7 +41,7 @@ namespace Identity.Data.Repositories
         {  // need more prove on this method
                   _dbSet.Attach(entity);
                   _context.Entry(entity).State = EntityState.Modified;
-           await  _context.SaveChangesAsync().ConfigureAwait(false);
+           await  _context.SaveChangesAsync().ConfigureAwait(true);
             return entity; 
         }
 
@@ -53,7 +53,7 @@ namespace Identity.Data.Repositories
             {
                 query = query.Include(includeProperty);
             }
-            return await query.ToListAsync().ConfigureAwait(false);
+            return await query.ToListAsync().ConfigureAwait(true);
         }
     }
 }

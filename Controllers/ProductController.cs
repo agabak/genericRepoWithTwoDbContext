@@ -34,7 +34,7 @@ namespace Identity.Controllers
 
             var product = new Product { ProductName = model?.ProductName };
 
-            product = await _repository.Create(product).ConfigureAwait(false);
+            product = await _repository.Create(product).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Home");
         }
@@ -42,7 +42,7 @@ namespace Identity.Controllers
         public async Task<IActionResult> Detail([FromRoute] int id)
         {
             if (id <= 0) return RedirectToAction("Index", "Home");
-            var product = await _repository.GetSingle(id).ConfigureAwait(false);
+            var product = await _repository.GetSingle(id).ConfigureAwait(true);
 
             if(product == null) return RedirectToAction("Index", "Home");
             return View(product);
