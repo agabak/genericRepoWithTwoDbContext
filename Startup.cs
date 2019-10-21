@@ -1,6 +1,7 @@
 using Identity.Data.DataContexts;
 using Identity.Data.Repositories;
 using Identity.Entities;
+using Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,7 @@ namespace Identity
 
             services.AddControllersWithViews();
 
+            services.AddScoped<IBuildDropdown, BuildDropdown>();
             services.AddScoped<ProductRepository>();
             services.AddScoped<SupplierRepository>();
         }

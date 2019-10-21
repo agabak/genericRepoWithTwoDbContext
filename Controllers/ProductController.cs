@@ -15,35 +15,27 @@ namespace Identity.Controllers
     public class ProductController : Controller
     {
         private readonly ProductRepository _productRepository;
-        private readonly SupplierRepository _supplierRepository;
-      
+        private readonly IBuildDropdown _buildDropdown;
+        protected ProductViewModel Product { get; set; }
 
-        public ProductController(ProductRepository productRepository, SupplierRepository supplierRepository)
+        public ProductController(ProductRepository productRepository, IBuildDropdown buildDropdown)
         {
             _productRepository = productRepository;
-            _supplierRepository = supplierRepository;
+            _buildDropdown = buildDropdown;
+            Product = new ProductViewModel();
         }
 
         public IActionResult Index()
-        {
-            
+        { 
             return View();
         }
-
-        
-
         public async Task<IActionResult> Create()
         {
-            var suppliers = await _supplierRepository.GetAll()
-                                              .ConfigureAwait(true);
-            var product = new ProductViewModel();
-
-            product.Items = BuildDropdown.DropdownItems(suppliers);
-
-            return View(product);
+            Product.Items = await _buildDropdown
+                                 .DropdownItems()
+                                 .ConfigureAwait(true);
+            return View(Product);
         }
-
-        
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel model)
@@ -51,15 +43,14 @@ namespace Identity.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            int supplierId = 0;
-            int.TryParse(model?.SupplierId, out supplierId);
+            var prod = int.TryParse(model?.SupplierId,  out int supplierId);
 
             var product = new Product { 
                                         ProductName = model?.ProductName, 
                                         UnitPrice = model.UnitPrice, 
                                         Package = model.Package, 
                                         IsDiscontinued = model.IsDiscontinued ,
-                                        SupplierId = supplierId
+                                        SupplierId = prod ? supplierId : 0
                                   };
 
             product = await _productRepository.Create(product).ConfigureAwait(true);
