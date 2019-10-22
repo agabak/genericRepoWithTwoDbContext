@@ -26,6 +26,7 @@ namespace Identity
                 })
                 .UseDefaultServiceProvider((context, options) => {
 
+                    // Not in production due to performance implecation
                     options.ValidateScopes = true;
                 });
 
