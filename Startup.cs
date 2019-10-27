@@ -53,9 +53,10 @@ namespace Identity
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default",
-                                             "{controller}/{action}/{id?}",
-                                             new {controller ="Home", action= "Index"});
+                // endpoints.MapControllerRoute("default",
+                //                             "{controller}/{action}/{id?}",
+                //                           new {controller ="Home", action= "Index"});
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
